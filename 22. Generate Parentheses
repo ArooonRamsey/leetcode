@@ -1,0 +1,41 @@
+this question is a DP problem. my first commit is a solution using vector<vector<int> > and is like a binary tree question to solve this problem.
+
+this is not good enough,because use vector<vector<int> > to express vector<string> is always not good for space limit.
+
+after looking for help from "discuss",I find a good solution that using recursive method to solve this problem.
+
+solution:
+
+the left parenthesis(left) and right parenthesis(right) are considered,when a left is added to a tempstring,we add 1 to remaining right.
+
+when the remaining left and right are all 0,the function won't continue recurse,and push_back to the vector<string> res.
+
+注意：过去对迭代的理解不足，实际上迭代要考虑两个问题：
+
+1、迭代的时候仍然遵循函数内的顺序执行，要考虑迭代的终止条件和迭代时候函数参数列表是否用引用以及指针，以及函数所消耗的内存空间；
+
+2、迭代的时候终止迭代并返回后，删除该函数并回到上一级挂起的函数，从挂起的位置继续执行。
+
+and talk is cheap, show me the code:
+
+class Solution {
+    public:
+        vector<string> generateParenthesis(int n) {
+            vector<string> vec;
+            Recursion(vec,"",n,0);
+            return vec;
+        }
+
+        void Recursion(vector<string> &vec,string str,int left,int right){
+            if(left == 0 && right == 0) {
+                vec.push_back(str);
+                return;
+            }
+            if(left){
+                Recursion(vec,str + "(" ,left -1 ,right + 1);
+            }
+            if(right){
+                Recursion(vec,str + ")",left,right - 1);
+            }
+        }
+};
