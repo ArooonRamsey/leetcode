@@ -1,0 +1,42 @@
+this problem is also met at nowcoder.
+
+my firstly solution is ACcepted, but that solution uses extra O(nlog(n)) space,and it's not the best answer.
+
+but this solution is good for understanding.
+
+这个问题要通过迭代来解决，在每次迭代的时候会创建新的两个向量，是下一次迭代的输入，即新的先序遍历和中序遍历产生的向量。
+
+the first commit is as follow:
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* buildTree(vector<int>& pre, vector<int>& vin) {
+        if(pre.empty()) return NULL;
+        TreeNode* root = new TreeNode(pre[0]);
+        vector<int> leftvinT,rightvinT,leftpreT,rightpreT;
+        vector<int>::iterator iter;
+        iter = find(vin.begin(),vin.end(),pre[0]);
+        leftvinT.assign(vin.begin(),iter);
+        rightvinT.assign(iter + 1,vin.end());
+        leftpreT.assign(pre.begin() + 1,pre.begin() + (iter - vin.begin()) + 1);
+        rightpreT.assign(pre.begin() + (iter - vin.begin()) + 1,pre.end());
+        root->left = buildTree(leftpreT,leftvinT);
+        root->right = buildTree(rightpreT,rightvinT);
+        return root;
+    }
+};
+
+explaination : 先序遍历的第一个数是树的根节点，而在中序遍历中，根节点的左边所有数都是根节点的左子树上的value，右边所有数是根节点右子树上的value，
+
+先序遍历中，也是根节点、根节点左子树、根节点右子树来存储的。因此可以在每一次迭代中，将子树上的新先序遍历结果和中序遍历结果重新用新的向量存储。
+
+迭代的终止条件是新向量为空，也就是说上一次迭代已经是叶子节点。
