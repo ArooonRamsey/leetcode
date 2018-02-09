@@ -40,3 +40,26 @@ explaination : 先序遍历的第一个数是树的根节点，而在中序遍�
 先序遍历中，也是根节点、根节点左子树、根节点右子树来存储的。因此可以在每一次迭代中，将子树上的新先序遍历结果和中序遍历结果重新用新的向量存储。
 
 迭代的终止条件是新向量为空，也就是说上一次迭代已经是叶子节点。
+
+OK，we know that this is not the best solution,and I wanna push a better one.
+
+TreeNode *buildTree(vector<int> &preorder, vector<int> &inorder) {
+    return create(preorder, inorder, 0, preorder.size() - 1, 0, inorder.size() - 1);
+}
+
+TreeNode* create(vector<int>& preorder, vector<int>& inorder, int ps, int pe, int is, int ie){
+    if(ps > pe){
+        return nullptr;
+    }
+    TreeNode* node = new TreeNode(preorder[ps]);
+    int pos;
+    for(int i = is; i <= ie; i++){
+        if(inorder[i] == node->val){
+            pos = i;
+            break;
+        }
+    }
+    node->left = create(preorder, inorder, ps + 1, ps + pos - is, is, pos - 1);
+    node->right = create(preorder, inorder, pe - ie + pos + 1, pe, pos + 1, ie);
+    return node;
+}
