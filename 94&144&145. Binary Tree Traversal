@@ -1,0 +1,61 @@
+binary tree traveling is a good problem to help me understanding recursion.
+
+pre and in traveling has similar solution,and post-traveling need to use stack as a support;
+
+inorder traveling is solved as follow, and we need traveling one node's left subtree ,then travel this node,finally travel its right subtree;
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> vec_inorder;
+    vector<int> inorderTraversal(TreeNode* root) {
+        if(root == NULL)
+            return vec_inorder;
+        
+        inorderTraversal(root->left);
+        vec_inorder.push_back(root->val);
+        //if(root->right != NULL);
+        inorderTraversal(root->right);
+        return vec_inorder;
+    }
+};
+
+preordeer has the same solution,but we need to travel the node itself first,and then travel his subleft and subright;
+
+when we talk about postorder-traveling, we should remember one thing that the root node is the final one considered,
+in the vector of traveling result,root node's value is the vector<int>::back().
+
+and when we push a stack to a vector,the stack's top is pushed into vector's front.
+
+we can also use a help function to recursion, and the solution is as follow:
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void helper(TreeNode* root,vector<int>& iRet){
+        if(root->left) helper(root->left,iRet);
+        if(root->right) helper(root->right,iRet);
+        iRet.push_back(root->val);
+    }
+    vector<int> postorderTraversal(TreeNode* root) {
+        vector<int> iRet;
+        if(root == NULL) return iRet;
+        helper(root,iRet);
+        
+        return iRet;
+    }
+};
