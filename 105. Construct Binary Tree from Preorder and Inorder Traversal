@@ -63,3 +63,7 @@ TreeNode* create(vector<int>& preorder, vector<int>& inorder, int ps, int pe, in
     node->right = create(preorder, inorder, pe - ie + pos + 1, pe, pos + 1, ie);
     return node;
 }
+
+这里我们也可以用一个函数来实现，并且不需要递归浪费多余的空间，而是用stack做辅助存储结构并循环迭代，每一次迭代先放根节点，
+再判断右子树再判断左子树，并先将右子树的内容放进栈内，再将左子树的内容入栈。这样出栈的时候顺序将是左子树，右子树，根节点，
+如此便做到了后续遍历。
