@@ -1,0 +1,34 @@
+this is a problem about linked list, when talking about linked list, we always use a temporary listNode.
+
+when we have to change the order of a list, we also need to consider the changed listNode->next, for there are two or more listNode
+has the same next node.
+
+there's the solution of mine:
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        ListNode fakehead = ListNode(0);
+        ListNode* pre = &fakehead;
+        fakehead.next = head;
+        ListNode* temp;
+        while(head && head->next){
+            temp = head->next;
+            head->next = head->next->next;
+            temp->next = head;
+            head = temp;
+            pre->next = head;
+            pre = head->next;
+            head = head->next->next;
+        }
+        return fakehead.next;
+    }
+};
